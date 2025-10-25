@@ -98,9 +98,10 @@ jobs:
       - name: Build Tweak for Sideloading
         id: build_package
         run: |
+          export THEOS=${{ github.workspace }}/theos
           cd ${{ github.workspace }}/main
-          make clean package SIDELOADING=1
-        env:
+          make clean package SIDELOADING=1 V=1 || { echo "Build failed with exit code $?"; exit 1; }
+          env:
           THEOS: ${{ github.workspace }}/theos
 
       - name: Inject tweak into provided IPA
